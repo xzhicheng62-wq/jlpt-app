@@ -1110,5 +1110,13 @@ detailEl.addEventListener('click', e=>{
    ============================================================ */
 renderList();
 </script>
+  <button id="floatBack" style="display:none; position:fixed; top:20px; left:20px; z-index:9999; padding:8px 16px; background:#d94f3d; color:#fff; border:none; border-radius:20px; font-weight:bold; font-size:14px; box-shadow:0 2px 8px rgba(0,0,0,0.2);" onclick="document.getElementById('detail').classList.remove('open'); this.style.display='none';">⬅️ 返回列表</button>
+<script>
+  const dEl = document.getElementById('detail');
+  const bBtn = document.getElementById('floatBack');
+  new MutationObserver(() => {
+    bBtn.style.display = dEl.classList.contains('open') ? 'block' : 'none';
+  }).observe(dEl, { attributes: true });
+</script>
 </body>
 </html>
