@@ -4,30 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>大家的日语 · 完美版</title>
+    <title>大家的日语 · 全量版</title>
     <style>
         :root { --bg-color: #f2f2f7; --card-bg: #ffffff; --text-main: #1c1c1e; --text-sub: #8e8e93; --accent-color: #007aff; --accent-light: #e5f0ff; --warning-color: #ff9500; --border-color: #e5e5ea; --success-color: #34c759; --danger-color: #ff3b30; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg-color); color: var(--text-main); display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 16px; padding-bottom: 80px; }
-        
         .top-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 420px; margin-bottom: 12px; }
         .top-bar h1 { font-size: 1.1rem; font-weight: 700; }
         .top-bar .stats { font-size: 0.8rem; color: var(--text-sub); background: var(--border-color); padding: 4px 10px; border-radius: 12px; }
         .scroll-x { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; width: 100%; max-width: 420px; scrollbar-width: none; }
         .scroll-x::-webkit-scrollbar { display: none; }
-        .btn-pill { flex: 0 0 auto; padding: 8px 16px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; font-size: 0.9rem; font-weight: 500; color: var(--text-sub); transition: all 0.2s; }
+        .btn-pill { flex: 0 0 auto; padding: 8px 16px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; font-size: 0.9rem; font-weight: 500; color: var(--text-sub); transition: all 0.2s; cursor: pointer; }
         .btn-pill.active { background: var(--accent-color); color: white; border-color: var(--accent-color); box-shadow: 0 4px 10px rgba(0,122,255,0.3); }
-        
         .main-content { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 12px; }
-        .word-card { background: var(--card-bg); border-radius: 16px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; flex-direction: column; position: relative; transition: all 0.3s ease; cursor: pointer; }
+        .word-card { background: var(--card-bg); border-radius: 16px; padding: 34px 16px 16px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; flex-direction: column; position: relative; transition: all 0.3s ease; cursor: pointer; }
         .word-card:active { transform: scale(0.99); }
         .word-header { display: flex; justify-content: space-between; align-items: flex-start; padding-right: 50px; }
         .word-jp { font-size: 1.4rem; font-weight: 700; }
         .word-kana { font-size: 1rem; color: var(--text-sub); margin-top: 4px; }
         .word-romaji { font-size: 0.85rem; color: #a0a0a5; margin-top: 2px; }
         .word-cn { font-size: 1rem; color: var(--accent-color); font-weight: 600; margin-top: 6px; }
-        .word-type { font-size: 0.75rem; background: var(--warning-color); color: white; padding: 2px 8px; border-radius: 10px; position: absolute; top: 16px; left: 16px; }
-        .speaker-btn { position: absolute; right: 16px; top: 16px; background: var(--accent-light); border: none; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--accent-color); transition: all 0.2s; }
+        .word-type { font-size: 0.75rem; background: var(--warning-color); color: white; padding: 2px 8px; border-radius: 10px; position: absolute; top: 10px; left: 16px; }
+        .speaker-btn { position: absolute; right: 16px; top: 16px; background: var(--accent-light); border: none; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--accent-color); transition: all 0.2s; cursor: pointer; }
         .speaker-btn:active { transform: scale(0.9); background: #d0e4ff; }
         .word-details { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; margin-top: 0; background: #f8f9fa; border-radius: 12px; }
         .word-card.expanded .word-details { max-height: 1200px; margin-top: 16px; padding: 16px; border-top: 1px solid var(--border-color); }
@@ -36,9 +34,8 @@
         .conjugation-item:last-child { border-bottom: none; padding-bottom: 0; }
         .conjugation-label { font-size: 0.85rem; color: var(--text-sub); }
         .conjugation-value { font-size: 1rem; font-weight: 700; }
-        
         .grammar-item { background: var(--card-bg); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        .grammar-header { padding: 18px; font-weight: 600; font-size: 1.05rem; display: flex; justify-content: space-between; align-items: center; }
+        .grammar-header { padding: 18px; font-weight: 600; font-size: 1.05rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
         .grammar-header::after { content: '▾'; color: var(--text-sub); transition: transform 0.3s; }
         .grammar-item.open .grammar-header::after { transform: rotate(180deg); }
         .grammar-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; padding: 0 18px; background: #fafafa; }
@@ -48,23 +45,37 @@
         .example .jp { font-size: 1rem; font-weight: 600; margin-bottom: 2px; }
         .example .romaji { font-size: 0.85rem; color: #a0a0a5; margin-bottom: 6px; }
         .example .cn { font-size: 0.9rem; color: var(--text-sub); }
-        
+        /* 🌟 修复后的测试模式 UI（完美适配手机屏幕） */
+        .quiz-container { width: 100%; max-width: 420px; display: flex; flex-direction: column; box-sizing: border-box; }
+        .quiz-header { display: flex; width: 100%; box-sizing: border-box; justify-content: center; gap: 8px; margin-bottom: 24px; background: #e5e5ea; padding: 4px; border-radius: 30px; }
+        .quiz-header .btn-pill { flex: 1; display: flex; justify-content: center; align-items: center; white-space: nowrap; border: none; background: transparent; border-radius: 26px; padding: 12px; font-size: 0.95rem; font-weight: 600; color: var(--text-sub); box-shadow: none; cursor: pointer; }
+        .quiz-header .btn-pill.active { background: var(--card-bg); color: var(--accent-color); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .quiz-progress-wrapper { display: flex; width: 100%; justify-content: center; margin-bottom: 20px; }
+        .quiz-progress { background: #e5f0ff; color: var(--accent-color); font-size: 0.85rem; font-weight: 700; padding: 6px 16px; border-radius: 20px; }
+        .quiz-question { background: var(--card-bg); border-radius: 24px; width: 100%; box-sizing: border-box; padding: 40px 24px; text-align: center; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+        .quiz-question::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #007aff, #34c759); }
+        .quiz-question .q-text { font-size: 2rem; font-weight: 800; color: var(--text-main); margin-bottom: 16px; line-height: 1.3; word-break: break-word; }
+        .quiz-question .q-sub { font-size: 1.1rem; color: var(--text-sub); margin-bottom: 12px; }
+        .quiz-speaker-btn { background: var(--accent-light); border: none; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: var(--accent-color); margin: 0 auto; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,122,255,0.2); cursor: pointer; }
+        .quiz-speaker-btn:active { transform: scale(0.9); }
+        .quiz-options { display: flex; flex-direction: column; gap: 12px; width: 100%; box-sizing: border-box; }
+        .option-btn { background: var(--card-bg); border: 2px solid transparent; border-radius: 18px; width: 100%; box-sizing: border-box; padding: 18px 20px; font-size: 1rem; font-weight: 600; text-align: left; color: var(--text-main); box-shadow: 0 4px 12px rgba(0,0,0,0.03); transition: all 0.2s; display: flex; align-items: center; word-break: break-word; cursor: pointer; }
+        .option-btn:active { transform: scale(0.98); background: #f8f9fa; }
+        .option-btn::before { content: ''; width: 22px; height: 22px; border: 2px solid #d1d1d6; border-radius: 50%; margin-right: 12px; flex-shrink: 0; transition: all 0.2s; }
+        .option-btn.correct { background: #e5f9e5; border-color: var(--success-color); color: var(--success-color); box-shadow: 0 6px 16px rgba(52,199,89,0.15); }
+        .option-btn.correct::before { border-color: var(--success-color); background: var(--success-color); box-shadow: inset 0 0 0 4px white; }
+        .option-btn.wrong { background: #ffe5e5; border-color: var(--danger-color); color: var(--danger-color); box-shadow: 0 6px 16px rgba(255,59,48,0.15); }
+        .option-btn.wrong::before { border-color: var(--danger-color); background: var(--danger-color); box-shadow: inset 0 0 0 4px white; }
+        .quiz-result { text-align: center; padding: 40px 20px; background: var(--card-bg); border-radius: 24px; width: 100%; box-sizing: border-box; box-shadow: 0 10px 30px rgba(0,0,0,0.06); margin-top: 20px; }
+        .quiz-result h2 { font-size: 1.8rem; margin-bottom: 12px; color: var(--text-main); }
+        .quiz-result p { font-size: 1.1rem; color: var(--text-sub); margin-bottom: 32px; }
+        .btn-primary { background: linear-gradient(135deg, #007aff, #0062cc); color: #fff; border: none; padding: 18px 32px; border-radius: 30px; font-size: 1.05rem; font-weight: 700; width: 100%; box-shadow: 0 6px 16px rgba(0,122,255,0.3); transition: all 0.2s; cursor: pointer; }
+        .btn-primary:active { transform: scale(0.98); opacity: 0.9; }
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(15px); border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; padding-bottom: env(safe-area-inset-bottom, 20px); z-index: 100; }
-        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 12px 0; color: var(--text-sub); font-size: 0.75rem; font-weight: 600; background: none; border: none; }
+        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 12px 0; color: var(--text-sub); font-size: 0.75rem; font-weight: 600; background: none; border: none; cursor: pointer; }
         .nav-item .icon { font-size: 1.5rem; margin-bottom: 4px; }
         .nav-item.active { color: var(--accent-color); }
-        
-        .quiz-question { background: var(--card-bg); border-radius: 20px; padding: 36px 20px; text-align: center; margin-bottom: 24px; }
-        .quiz-question .q-text { font-size: 2.2rem; font-weight: 700; margin-bottom: 10px; }
-        .quiz-question .q-sub { font-size: 1.1rem; color: var(--text-sub); }
-        .quiz-question .q-romaji { font-size: 0.9rem; color: #a0a0a5; margin-top: 4px; }
-        .quiz-options { display: flex; flex-direction: column; gap: 14px; }
-        .option-btn { background: var(--card-bg); border: 2px solid var(--card-bg); border-radius: 16px; padding: 18px; font-size: 1.05rem; font-weight: 600; text-align: left; color: var(--text-main); }
-        .option-btn.correct { background: #e5f9e5; border-color: var(--success-color); color: var(--success-color); }
-        .option-btn.wrong { background: #ffe5e5; border-color: var(--danger-color); color: var(--danger-color); }
-        .quiz-result { text-align: center; padding: 40px 0; }
-        .quiz-result h2 { font-size: 1.6rem; margin-bottom: 16px; }
-        .btn-primary { background: var(--accent-color); color: #fff; border: none; padding: 16px 32px; border-radius: 30px; font-size: 1.05rem; font-weight: 600; width: 100%; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -90,63 +101,26 @@
 
 <script>
     // ==========================================
-    // 数据区：只包含第1-2课 (确保基础完全无错)
+    // 数据区（绝对安全的独立模块，后续每段数据直接追加在这里）
     // ==========================================
-    const masterData = {
-        "1": {
-            v: [
-                ["わたし","わたし","我","noun"], ["あなた","あなた","你","noun"], ["あの ひと","あの ひと","那个人","noun"],
-                ["先生","せんせい","老师","noun"], ["学生","がくせい","学生","noun"], ["会社員","かいしゃいん","公司职员","noun"],
-                ["銀行員","ぎんこういん","银行职员","noun"], ["医者","いしゃ","医生","noun"], ["研究者","けんきゅうしゃ","研究人员","noun"],
-                ["大学","だいがく","大学","noun"], ["病院","びょういん","医院","noun"], ["だれ","だれ","谁","other"],
-                ["どなた","どなた","哪位(礼貌)","other"], ["～歳","～さい","～岁","other"], ["何歳","なんさい","几岁","other"],
-                ["はい","はい","是","other"], ["いいえ","いいえ","不是","other"], ["アメリカ","アメリカ","美国","noun"],
-                ["イギリス","イギリス","英国","noun"], ["インド","インド","印度","noun"], ["インドネシア","インドネシア","印度尼西亚","noun"],
-                ["韓国","かんこく","韩国","noun"], ["タイ","タイ","泰国","noun"], ["中国","ちゅうごく","中国","noun"],
-                ["ドイツ","ドイツ","德国","noun"], ["日本","にほん","日本","noun"], ["ブラジル","ブラジル","巴西","noun"],
-                ["～さん","～さん","先生/女士","other"], ["～ちゃん","～ちゃん","小~","other"], ["～じん","～じん","~人","other"]
-            ],
-            g: [
-                { r:"名词1 は 名词2 です", d:"【中式理解】表示判断，相当于“A是B”。助词「は」在这里读作「wa」，不读「ha」。", e:[["わたしは マイク・ミラーです。","我是迈克·米勒。"],["わたしは 会社員です。","我是公司职员。"]] },
-                { r:"名词1 は 名词2 じゃ（では） ありません", d:"【中式理解】「です」的否定形式。口语常缩略成「じゃ」，正式场合用「では」。", e:[["サントスさんは 学生じゃ ありません。","桑托斯不是学生。"]] },
-                { r:"名词1 は 名词2 ですか", d:"【中式理解】句尾加「か」变成疑问句（升调）。肯定回答「はい」，否定回答「いいえ」。", e:[["ミラーさんは アメリカ人ですか。","米勒是美国人吗？"],["……はい、アメリカ人です。","……对，是美国人。"]] },
-                { r:"名词も", d:"【中式理解】「も」相当于中文的“也”。把相同事物作为前提陈述时用。", e:[["ミラーさんは 会社員です。","米勒是公司职员。"],["グプタさんも 会社員です。","古普塔也是公司职员。"]] },
-                { r:"名词1 の 名词2", d:"【中式理解】相当于中文的“的”。前面的名词1修饰后面的名词2。", e:[["ミラーさんは IMCの 社員です。","米勒是IMC公司的职员。"]] },
-                { r:"～さん", d:"【中式理解】加在听话人或第三者姓名后，表敬意（类似中文的“先生/女士”）。但绝不能加在自己名字后。", e:[["あの 方は ミラーさんです。","那位是米勒先生。"]] }
-            ]
-        },
-        "2": {
-            v: [
-                ["これ","これ","这(近)","other"], ["それ","それ","那(近)","other"], ["あれ","あれ","那(远)","other"],
-                ["この","この","这个(后接名词)","other"], ["その","その","那个(后接名词)","other"], ["あの","あの","那个(后接名词)","other"],
-                ["本","ほん","书","noun"], ["辞書","じしょ","字典","noun"], ["雑誌","ざっし","杂志","noun"],
-                ["新聞","しんぶん","报纸","noun"], ["ノート","ノート","笔记本","noun"], ["手帳","てちょう","记事本","noun"],
-                ["名刺","めいし","名片","noun"], ["カード","カード","卡片","noun"], ["鉛筆","えんぴつ","铅笔","noun"],
-                ["ボールペン","ボールペン","圆珠笔","noun"], ["シャープペンシル","シャープペンシル","自动铅笔","noun"], ["鍵","かぎ","钥匙","noun"],
-                ["時計","とけい","钟表","noun"], ["傘","かさ","伞","noun"], ["かばん","かばん","包、提包","noun"],
-                ["CD","シーディー","CD、光盘","noun"], ["テレビ","テレビ","电视","noun"], ["ラジオ","ラジオ","收音机","noun"],
-                ["カメラ","カメラ","照相机","noun"], ["コンピューター","コンピューター","电脑","noun"], ["車","くるま","汽车","noun"],
-                ["机","つくえ","桌子","noun"], ["椅子","いす","椅子","noun"], ["チョコレート","チョコレート","巧克力","noun"],
-                ["コーヒー","コーヒー","咖啡","noun"], ["英語","えいご","英语","noun"], ["日本語","にほんご","日语","noun"],
-                ["～語","～ご","～语","other"], ["何","なん","什么","other"], ["そう","そう","是","other"]
-            ],
-            g: [
-                { r:"これ / それ / あれ", d:"【中式理解】指示代词。近处（这）、中距离（那）、远处（那）。独自成句，后面不接名词。", e:[["それは 辞書ですか。","那是字典吗？"],["これは 誰の 傘ですか。","这是谁的伞？"]] },
-                { r:"この / その / あの + 名词", d:"【中式理解】当你要说“这个书”、“那个人”时，必须加上名词，所以用この/その/あの。", e:[["この 本は わたしのです。","这本书是我的。"],["あの 方は どなたですか。","那位是谁？"]] },
-                { r:"名词1 の 名词2", d:"【中式理解】表示所属或属性，相当于中文的“的”。", e:[["これは コンピューターの 本です。","这是计算机的书。"],["これは わたしの 本です。","这是我的书。"]] },
-                { r:"そうですか", d:"【中式理解】听到新信息时，表示“噢，是这样啊”，降调读。", e:[["この 傘は あなたのですか。","这把伞是你的吗？"],["……いいえ、違います。シュミットさんのです。","……不是，那是舒米特的。"],["そうですか。","噢，是吗。"]] }
-            ]
-        }
-    };
+    const masterData = {};
+    
+    masterData["1"] = { v: [["わたし","わたし","我","noun"],["あなた","あなた","你","noun"],["あの ひと","あの ひと","那个人","noun"],["先生","せんせい","老师","noun"],["学生","がくせい","学生","noun"],["会社員","かいしゃいん","公司职员","noun"],["銀行員","ぎんこういん","银行职员","noun"],["医者","いしゃ","医生","noun"],["研究者","けんきゅうしゃ","研究人员","noun"],["大学","だいがく","大学","noun"],["病院","びょういん","医院","noun"],["だれ","だれ","谁","other"],["どなた","どなた","哪位","other"],["～歳","～さい","～岁","other"],["何歳","なんさい","几岁","other"],["はい","はい","是","other"],["いいえ","いいえ","不是","other"],["アメリカ","アメリカ","美国","noun"],["イギリス","イギリス","英国","noun"],["インド","インド","印度","noun"],["インドネシア","インドネシア","印度尼西亚","noun"],["韓国","かんこく","韩国","noun"],["タイ","タイ","泰国","noun"],["中国","ちゅうごく","中国","noun"],["ドイツ","ドイツ","德国","noun"],["日本","にほん","日本","noun"],["ブラジル","ブラジル","巴西","noun"],["～さん","～さん","先生/女士","other"],["～ちゃん","～ちゃん","小~","other"],["～じん","～じん","~人","other"]], g: [{ r:"名词1 は 名词2 です", d:"【中式理解】表示判断，相当于“A是B”。助词「は」读作「wa」。", e:[["わたしは マイク・ミラーです。","我是迈克·米勒。"],["わたしは 会社員です。","我是公司职员。"]] },{ r:"名词1 は 名词2 じゃ（では） ありません", d:"【中式理解】「です」的否定形式。口语常用「じゃ」，正式场合用「では」。", e:[["サントスさんは 学生じゃ ありません。","桑托斯不是学生。"]] },{ r:"名词1 は 名词2 ですか", d:"【中式理解】句尾加「か」变成疑问句。肯定回答「はい」，否定回答「いいえ」。", e:[["ミラーさんは アメリカ人ですか。","米勒是美国人吗？"]] },{ r:"名词も", d:"【中式理解】「も」相当于中文的“也”。", e:[["ミラーさんは 会社員です。","米勒是公司职员。"],["グプタさんも 会社員です。","古普塔也是公司职员。"]] },{ r:"名词1 の 名词2", d:"【中式理解】相当于中文的“的”。前面的名词1修饰后面的名词2。", e:[["ミラーさんは IMCの 社員です。","米勒是IMC公司的职员。"]] },{ r:"～さん", d:"【中式理解】加在听话人或第三者姓名后，表敬意。不能加在自己名字后。", e:[["あの 方は ミラーさんです。","那位是米勒先生。"]] }] };
+
+    masterData["2"] = { v: [["これ","これ","这","other"],["それ","それ","那","other"],["あれ","あれ","那(远)","other"],["この","この","这个(后接名词)","other"],["その","その","那个(后接名词)","other"],["あの","あの","那个(后接名词)","other"],["本","ほん","书","noun"],["辞書","じしょ","字典","noun"],["雑誌","ざっし","杂志","noun"],["新聞","しんぶん","报纸","noun"],["ノート","ノート","笔记本","noun"],["手帳","てちょう","记事本","noun"],["名刺","めいし","名片","noun"],["カード","カード","卡片","noun"],["鉛筆","えんぴつ","铅笔","noun"],["ボールペン","ボールペン","圆珠笔","noun"],["シャープペンシル","シャープペンシル","自动铅笔","noun"],["鍵","かぎ","钥匙","noun"],["時計","とけい","钟表","noun"],["傘","かさ","伞","noun"],["かばん","かばん","包","noun"],["CD","シーディー","CD","noun"],["テレビ","テレビ","电视","noun"],["ラジオ","ラジオ","收音机","noun"],["カメラ","カメラ","照相机","noun"],["コンピューター","コンピューター","电脑","noun"],["車","くるま","汽车","noun"],["机","つくえ","桌子","noun"],["椅子","いす","椅子","noun"],["チョコレート","チョコレート","巧克力","noun"],["コーヒー","コーヒー","咖啡","noun"],["英語","えいご","英语","noun"],["日本語","にほんご","日语","noun"],["～語","～ご","～语","other"],["何","なん","什么","other"],["そう","そう","是","other"]], g: [{ r:"これ / それ / あれ", d:"【中式理解】指示代词。近处、中距离、远处。独自成句，后面不接名词。", e:[["それは 辞書ですか。","那是字典吗？"],["これは 誰の 傘ですか。","这是谁的伞？"]] },{ r:"この / その / あの + 名词", d:"【中式理解】修饰名词时使用，表示“这个/那个……”。", e:[["この 本は わたしのです。","这本书是我的。"],["あの 方は どなたですか。","那位是谁？"]] },{ r:"名词1 の 名词2", d:"【中式理解】表示所属或属性，相当于中文的“的”。", e:[["これは コンピューターの 本です。","这是计算机的书。"],["これは わたしの 本です。","这是我的书。"]] },{ r:"そうですか", d:"【中式理解】听到新信息时，表示“噢，是这样啊”，降调读。", e:[["この 傘は あなたのですか。","这把伞是你的吗？"]] }] };
+
+    masterData["3"] = { v: [["ここ","ここ","这里","other"],["そこ","そこ","那里","other"],["あそこ","あそこ","那里(远)","other"],["どこ","どこ","哪里","other"],["こちら","こちら","这边","other"],["そちら","そちら","那边","other"],["あちら","あちら","那边(远)","other"],["どちら","どちら","哪边","other"],["教室","きょうしつ","教室","noun"],["食堂","しょくどう","食堂","noun"],["事務所","じむしょ","事务所","noun"],["会議室","かいぎしつ","会议室","noun"],["受付","うけつけ","接待处","noun"],["ロビー","ロビー","大厅","noun"],["部屋","へや","房间","noun"],["トイレ","トイレ","厕所","noun"],["階段","かいだん","楼梯","noun"],["エレベーター","エレベーター","电梯","noun"],["エスカレーター","エスカレーター","自动扶梯","noun"],["自動販売機","じどうはんばいき","自动售货机","noun"],["電話","でんわ","电话","noun"],["国","くに","国家","noun"],["会社","かいしゃ","公司","noun"],["うち","うち","家","noun"],["靴","くつ","鞋","noun"],["ネクタイ","ネクタイ","领带","noun"],["ワイン","ワイン","葡萄酒","noun"],["売り場","うりば","售货处","noun"],["地下","ちか","地下","noun"],["～階","～かい","～层","other"],["～円","～えん","～日元","other"],["いくら","いくら","多少钱","other"],["百","ひゃく","百","other"],["千","せん","千","other"],["万","まん","万","other"]], g: [{ r:"ここ / そこ / あそこ / どこ", d:"【中式理解】指示场所的代词。", e:[["お手洗いは あそこです。","洗手间在那边。"],["電話は 2階です。","电话在二楼。"]] },{ r:"名词 は 场所 です", d:"【中式理解】表示人或物存在的场所。", e:[["山田さんは 事務所です。","山田在事务所。"]] },{ r:"どこ / どちら", d:"【中式理解】询问场所。「どちら」是「どこ」的礼貌说法。", e:[["お手洗いは どこですか。","洗手间在哪里？"],["エレベーターは どちらですか。","电梯在哪里？"]] }] };
+
+    masterData["4"] = { v: [["起きます","おきます","起床","verb"],["寝ます","ねます","睡觉","verb"],["働きます","はたらきます","工作","verb"],["休みます","やすみます","休息","verb"],["勉強します","べんきょうします","学习","verb"],["終わります","おわります","结束","verb"],["デパート","デパート","百货商店","noun"],["銀行","ぎんこう","银行","noun"],["郵便局","ゆうびんきょく","邮局","noun"],["図書館","としょかん","图书馆","noun"],["美術館","びじゅつかん","美术馆","noun"],["今","いま","现在","other"],["～時","～じ","～点","other"],["～分","～ふん","～分","other"],["半","はん","半","other"],["何時","なんじ","几点","other"],["何分","なんぷん","几分","other"],["午前","ごぜん","上午","noun"],["午後","ごご","下午","noun"],["朝","あさ","早上","noun"],["昼","ひる","中午","noun"],["晩","ばん","晚上","noun"],["おととい","おととい","前天","other"],["きのう","きのう","昨天","other"],["きょう","きょう","今天","other"],["あした","あした","明天","other"],["あさって","あさって","后天","other"],["けさ","けさ","今天早上","other"],["こんばん","こんばん","今天晚上","other"],["休み","やすみ","休息","noun"],["昼休み","ひるやすみ","午休","noun"],["毎朝","まいあさ","每天早上","other"],["毎晩","まいばん","每天晚上","other"],["毎日","まいにち","每天","other"],["月曜日","げつようび","星期一","noun"],["火曜日","かようび","星期二","noun"],["水曜日","すいようび","星期三","noun"],["木曜日","もくようび","星期四","noun"],["金曜日","きんようび","星期五","noun"],["土曜日","どようび","星期六","noun"],["日曜日","にちようび","星期天","noun"],["何曜日","なんようび","星期几","other"],["～から","～から","从～","other"],["～まで","～まで","到～","other"],["～ごろ","～ごろ","～左右","other"]], g: [{ r:"今 ～時 ～分です", d:"【中式理解】表示现在的具体时间。", e:[["今 何時ですか。","现在几点？"],["……7時10分です。","……7点10分。"]] },{ r:"动词ます / 动词ません / 动词ました", d:"【中式理解】动词的礼貌体。ます是现在肯定，ません是否定，ました是过去肯定。", e:[["わたしは 毎日 勉強します。","我每天学习。"],["あした 6時に 起きます。","明天6点起床。"],["きのう 勉強しました。","昨天学习了。"]] },{ r:"名词（时间）に 动词", d:"【中式理解】在具体的时间点后面加「に」。", e:[["6時半に 起きます。","6点半起床。"]] }] };
+
+    masterData["5"] = { v: [["行きます","いきます","去","verb"],["来ます","きます","来","verb"],["帰ります","かえります","回去","verb"],["学校","がっこう","学校","noun"],["スーパー","スーパー","超市","noun"],["駅","えき","车站","noun"],["飛行機","ひこうき","飞机","noun"],["船","ふね","船","noun"],["電車","でんしゃ","电车","noun"],["地下鉄","ちかてつ","地铁","noun"],["新幹線","しんかんせん","新干线","noun"],["バス","バス","公交车","noun"],["タクシー","タクシー","出租车","noun"],["自転車","じてんしゃ","自行车","noun"],["歩いて","あるいて","走路","other"],["人","ひと","人","noun"],["友達","ともだち","朋友","noun"],["彼","かれ","他","noun"],["彼女","かのじょ","她","noun"],["家族","かぞく","家族","noun"],["一人で","ひとりで","一个人","other"],["先週","せんしゅう","上周","other"],["今週","こんしゅう","这周","other"],["来週","らいしゅう","下周","other"],["先月","せんげつ","上个月","other"],["今月","こんげつ","这个月","other"],["来月","らいげつ","下个月","other"],["去年","きょねん","去年","other"],["今年","ことし","今年","other"],["来年","らいねん","明年","other"],["～年","～ねん","～年","other"],["何年","なんねん","几年","other"],["～月","～がつ","～月","other"],["何月","なんがつ","几月","other"],["～日","～にち","～日","other"],["何日","なんにち","几号","other"],["いつ","いつ","什么时候","other"],["誕生日","たんじょうび","生日","noun"]], g: [{ r:"名词（场所）へ 行きます / 来ます / 帰ります", d:"【中式理解】移动的方向用助词「へ」表示。", e:[["京都へ 行きます。","去京都。"],["日本へ 来ました。","来到了日本。"]] },{ r:"どこ[へ]も 行きません", d:"【中式理解】对疑问词所问范围的全部加以否定。", e:[["どこ[へ]も 行きません。","哪儿也不去。"]] },{ r:"名词（交通工具）で 行きます", d:"【中式理解】助词「で」表示手段、方法。", e:[["電車で 行きます。","坐电车去。"],["タクシーで 来ました。","坐出租车来的。"]] },{ r:"名词（人/动物）と 动词", d:"【中式理解】一起行动的人用助词「と」表示。", e:[["家族と 日本へ 来ました。","和家里人一起来日本的。"],["一人で 東京へ 行きます。","我自己去东京。"]] }] };
 
     // ==========================================
     // 🌟 日文假名 -> 罗马音 自动转换引擎
     // ==========================================
     function kanaToRomaji(kanaStr) {
         if (!kanaStr) return "";
-        const map = {
-            'あ':'a','い':'i','う':'u','え':'e','お':'o','か':'ka','き':'ki','く':'ku','け':'ke','こ':'ko','さ':'sa','し':'shi','す':'su','せ':'se','そ':'so','た':'ta','ち':'chi','つ':'tsu','て':'te','と':'to','な':'na','に':'ni','ぬ':'nu','ね':'ne','の':'no','は':'ha','ひ':'hi','ふ':'fu','へ':'he','ほ':'ho','ま':'ma','み':'mi','む':'mu','め':'me','も':'mo','や':'ya','ゆ':'yu','よ':'yo','ら':'ra','り':'ri','る':'ru','れ':'re','ろ':'ro','わ':'wa','を':'wo','ん':'n','が':'ga','ぎ':'gi','ぐ':'gu','げ':'ge','ご':'go','ざ':'za','じ':'ji','ず':'zu','ぜ':'ze','ぞ':'zo','だ':'da','ぢ':'ji','づ':'zu','で':'de','ど':'do','ば':'ba','び':'bi','ぶ':'bu','べ':'be','ぼ':'bo','ぱ':'pa','ぴ':'pi','ぷ':'pu','ぺ':'pe','ぽ':'po','きゃ':'kya','きゅ':'kyu','きょ':'kyo','しゃ':'sha','しゅ':'shu','しょ':'sho','ちゃ':'cha','ちゅ':'chu','ちょ':'cho','にゃ':'nya','にゅ':'nyu','にょ':'nyo','ひゃ':'hya','ひゅ':'hyu','ひょ':'hyo','みゃ':'mya','みゅ':'myu','みょ':'myo','りゃ':'rya','りゅ':'ryu','りょ':'ryo','ぎゃ':'gya','ぎゅ':'gyu','ぎょ':'gyo','じゃ':'ja','じゅ':'ju','じょ':'jo','びゃ':'bya','びゅ':'byu','びょ':'byo','ぴゃ':'pya','ぴゅ':'pyu','ぴょ':'pyo','ー':''
-        };
+        const map = { 'あ':'a','い':'i','う':'u','え':'e','お':'o','か':'ka','き':'ki','く':'ku','け':'ke','こ':'ko','さ':'sa','し':'shi','す':'su','せ':'se','そ':'so','た':'ta','ち':'chi','つ':'tsu','て':'te','と':'to','な':'na','に':'ni','ぬ':'nu','ね':'ne','の':'no','は':'ha','ひ':'hi','ふ':'fu','へ':'he','ほ':'ho','ま':'ma','み':'mi','む':'mu','め':'me','も':'mo','や':'ya','ゆ':'yu','よ':'yo','ら':'ra','り':'ri','る':'ru','れ':'re','ろ':'ro','わ':'wa','を':'wo','ん':'n','が':'ga','ぎ':'gi','ぐ':'gu','げ':'ge','ご':'go','ざ':'za','じ':'ji','ず':'zu','ぜ':'ze','ぞ':'zo','だ':'da','ぢ':'ji','づ':'zu','で':'de','ど':'do','ば':'ba','び':'bi','ぶ':'bu','べ':'be','ぼ':'bo','ぱ':'pa','ぴ':'pi','ぷ':'pu','ぺ':'pe','ぽ':'po','きゃ':'kya','きゅ':'kyu','きょ':'kyo','しゃ':'sha','しゅ':'shu','しょ':'sho','ちゃ':'cha','ちゅ':'chu','ちょ':'cho','にゃ':'nya','にゅ':'nyu','にょ':'nyo','ひゃ':'hya','ひゅ':'hyu','ひょ':'hyo','みゃ':'mya','みゅ':'myu','みょ':'myo','りゃ':'rya','りゅ':'ryu','りょ':'ryo','ぎゃ':'gya','ぎゅ':'gyu','ぎょ':'gyo','じゃ':'ja','じゅ':'ju','じょ':'jo','びゃ':'bya','びゅ':'byu','びょ':'byo','ぴゃ':'pya','ぴゅ':'pyu','ぴょ':'pyo','ー':'' };
         let result = ""; let i = 0;
         while (i < kanaStr.length) {
             if (kanaStr[i] === 'っ' || kanaStr[i] === 'ッ') { i++; if (i < kanaStr.length) { let nextChar = kanaStr[i], nextRomaji = ""; if (map[nextChar]) { nextRomaji = map[nextChar]; } else if (i + 1 < kanaStr.length && map[nextChar + kanaStr[i+1]]) { nextRomaji = map[nextChar + kanaStr[i+1]]; i++; } if (nextRomaji) { result += nextRomaji[0]; } } continue; }
@@ -157,9 +131,13 @@
         return result;
     }
 
+    // ==========================================
+    // 核心逻辑引擎
+    // ==========================================
     const $ = id => document.getElementById(id);
     const lessonSelector = $('lessonSelector'), filterBar = $('filterBar'), wordList = $('wordList'), grammarList = $('grammarList'), quizContainer = $('quizContainer'), statsInfo = $('statsInfo'), pageTitle = $('pageTitle');
-    let currentLesson = "1", currentTab = "vocab", currentFilter = "all", quizState = { active: false, questions: [], currentIndex: 0, score: 0, answered: false }, speechSynth = window.speechSynthesis;
+    let currentLesson = "1", currentTab = "vocab", currentFilter = "all", speechSynth = window.speechSynthesis;
+    let quizMode = 'vocab', quizState = { active: false, questions: [], currentIndex: 0, score: 0, answered: false };
 
     document.addEventListener('DOMContentLoaded', () => { renderLessonButtons(); renderContent(); });
 
@@ -186,18 +164,24 @@
     function renderContent() {
         const data = masterData[currentLesson]; if (!data) return;
         statsInfo.textContent = `${currentLesson} / 25`; pageTitle.textContent = `📖 第${currentLesson}课`;
+        
         wordList.style.display = currentTab === 'vocab' ? 'flex' : 'none';
         grammarList.style.display = currentTab === 'grammar' ? 'flex' : 'none';
         quizContainer.style.display = currentTab === 'quiz' ? 'flex' : 'none';
+        
+        // 🌟 修复：只要不在“单词”界面，顶部的筛选栏就彻底消失！
+        filterBar.style.display = currentTab === 'vocab' ? 'flex' : 'none';
+        
         if (currentTab === 'vocab') renderVocab(data.v);
         else if (currentTab === 'grammar') renderGrammar(data.g);
-        else startQuiz(data.v);
+        else startQuiz();
     }
 
     function switchTab(tab) {
         currentTab = tab;
         document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
         document.querySelector(`.nav-item[onclick="switchTab('${tab}')"]`).classList.add('active');
+        if (tab === 'quiz') quizMode = 'vocab'; // 默认词汇测试
         renderContent();
     }
 
@@ -233,7 +217,7 @@
             if (kana.endsWith("する")) { let s = kana.slice(0, -2); masu = s+"します"; te = s+"して"; ta = s+"した"; nai = s+"しない"; potential = s+"できる"; volitional = s+"しよう"; rule = "不规则(する)：词尾「する」变为「し」「して」等。"; }
             else { masu = "来ます"; te = "来て"; ta = "来た"; nai = "来ない"; potential = "来られる"; volitional = "来よう"; rule = "不规则(来る)：特殊变形。"; }
         } else if (type === 1) {
-            rule = "五段动词：根据词尾（う、く、ぐ、す、つ、ぬ、ぶ、む、る）分别变化。";
+            rule = "五段动词：根据词尾分别变化。";
             const iDan = { 'う':'い', 'く':'き', 'ぐ':'ぎ', 'す':'し', 'つ':'ち', 'ぬ':'に', 'ぶ':'び', 'む':'み', 'る':'り' }; masu = stem+iDan[lastChar]+"ます";
             const teMap = { 'う':'って', 'つ':'って', 'る':'って', 'む':'んで', 'ぶ':'んで', 'ぬ':'んで', 'く':'いて', 'ぐ':'いで', 'す':'して' }; te = stem+teMap[lastChar];
             const taMap = { 'う':'った', 'つ':'った', 'る':'った', 'む':'んだ', 'ぶ':'んだ', 'ぬ':'んだ', 'く':'いた', 'ぐ':'いだ', 'す':'した' }; ta = stem+taMap[lastChar];
@@ -257,42 +241,51 @@
         });
     }
 
-    function startQuiz(vocabList) {
-        if (!vocabList || vocabList.length < 4) { quizContainer.innerHTML = '<div style="text-align:center; padding:40px; color:#8e8e93;">当前课程单词少于4个，无法生成测试题。</div>'; return; }
-        const shuffled = [...vocabList].sort(() => 0.5 - Math.random()), selected = shuffled.slice(0, 4);
-        quizState = { active: true, questions: [], currentIndex: 0, score: 0, answered: false };
-        selected.forEach((c) => { const w = selected.filter(x => x[0] !== c[0]).slice(0, 3); const o = [...w, c].sort(() => 0.5 - Math.random()); quizState.questions.push({ question: c[0], kana: c[1], correctAnswer: c[2], options: o.map(x => x[2]) }); });
-        renderQuizQuestion();
-    }
+    function startQuiz() {
+        const data = masterData[currentLesson]; if (!data) return;
+        const modeSwitcherHTML = `<button class="btn-pill ${quizMode === 'vocab' ? 'active' : ''}" onclick="changeQuizMode('vocab')">📖 词汇测试</button><button class="btn-pill ${quizMode === 'grammar' ? 'active' : ''}" onclick="changeQuizMode('grammar')">📝 语法测试</button>`;
 
-    function renderQuizQuestion() {
-        if (quizState.currentIndex >= quizState.questions.length) { renderQuizResult(); return; }
-        const q = quizState.questions[quizState.currentIndex];
-        const qRomaji = kanaToRomaji(q.kana);
-        quizContainer.innerHTML = `<div style="font-size:0.9rem; color:#8e8e93; text-align:center; margin-bottom:12px;">第 ${quizState.currentIndex + 1} / ${quizState.questions.length} 题</div><div class="quiz-question"><div class="q-text">${q.question}</div><div class="q-sub">${q.kana}</div><div class="q-romaji">${qRomaji}</div><button class="speaker-btn" style="position:static; margin:16px auto 0; width:50px; height:50px; font-size:1.4rem;" onclick="speakJapanese('${q.kana}')">🔊</button></div><div class="quiz-options">${q.options.map(opt => `<button class="option-btn" onclick="checkAnswer(this, '${opt}', '${q.correctAnswer}')">${opt}</button>`).join('')}</div>`;
+        if (quizMode === 'vocab') {
+            if (!data.v || data.v.length < 4) { quizContainer.innerHTML = `<div class="quiz-header">${modeSwitcherHTML}</div><div style="text-align:center; padding:40px; color:#8e8e93;">当前课程单词少于4个，无法生成测试题。</div>`; return; }
+            const shuffled = [...data.v].sort(() => 0.5 - Math.random()); const selected = shuffled.slice(0, 4);
+            quizState = { active: true, questions: [], currentIndex: 0, score: 0, answered: false };
+            selected.forEach((c) => { const w = selected.filter(x => x[0] !== c[0]).slice(0, 3); const o = [...w, c].sort(() => 0.5 - Math.random()); quizState.questions.push({ question: c[0], kana: c[1], correctAnswer: c[2], options: o.map(x => x[2]) }); });
+            renderQuizQuestion(modeSwitcherHTML);
+        } else {
+            let allSentences = []; data.g.forEach(item => { if (item.e) { item.e.forEach(e => allSentences.push(e)); } });
+            if (allSentences.length < 4) { quizContainer.innerHTML = `<div class="quiz-header">${modeSwitcherHTML}</div><div style="text-align:center; padding:40px; color:#8e8e93;">当前课程的语法例句少于4个，无法生成测试题。请切换到词汇测试。</div>`; return; }
+            const shuffled = [...allSentences].sort(() => 0.5 - Math.random()); const selected = shuffled.slice(0, 4);
+            quizState = { active: true, questions: [], currentIndex: 0, score: 0, answered: false };
+            selected.forEach((c) => { const wrongOptions = allSentences.filter(x => x[1] !== c[1]).sort(() => 0.5 - Math.random()).slice(0, 3); const o = [...wrongOptions, c].sort(() => 0.5 - Math.random()); quizState.questions.push({ question: c[0], kana: c[0], correctAnswer: c[1], options: o.map(x => x[1]) }); });
+            renderQuizQuestion(modeSwitcherHTML);
+        }
     }
+    window.changeQuizMode = function(mode) { quizMode = mode; startQuiz(); };
 
+    function renderQuizQuestion(modeSwitcherHTML = '') {
+        if (quizState.currentIndex >= quizState.questions.length) { renderQuizResult(modeSwitcherHTML); return; }
+        const q = quizState.questions[quizState.currentIndex]; const isGrammar = quizMode === 'grammar';
+        const subText = isGrammar ? '' : `<div class="q-sub">${q.kana}</div>`; const speakText = isGrammar ? q.question : q.kana;
+        quizContainer.innerHTML = `<div class="quiz-header">${modeSwitcherHTML}</div><div class="quiz-progress-wrapper"><div class="quiz-progress">第 ${quizState.currentIndex + 1} / ${quizState.questions.length} 题</div></div><div class="quiz-question"><div class="q-text" style="${isGrammar ? 'font-size:1.6rem;' : ''}">${q.question}</div>${subText}<button class="quiz-speaker-btn" onclick="speakJapanese('${speakText}')">🔊</button></div><div class="quiz-options">${q.options.map(opt => `<button class="option-btn" onclick="checkAnswer(this, '${opt}', '${q.correctAnswer}')">${opt}</button>`).join('')}</div>`;
+    }
     function checkAnswer(btn, selected, correct) {
         if (quizState.answered) return; quizState.answered = true;
         const options = quizContainer.querySelectorAll('.option-btn');
         options.forEach(opt => { opt.style.pointerEvents = 'none'; if (opt.textContent === correct) opt.classList.add('correct'); else if (opt.textContent === selected) opt.classList.add('wrong'); });
         if (selected === correct) { quizState.score++; speakJapanese('正解'); } else { speakJapanese('残念'); }
-        setTimeout(() => { quizState.currentIndex++; quizState.answered = false; renderQuizQuestion(); }, 1500);
+        setTimeout(() => { quizState.currentIndex++; quizState.answered = false; renderQuizQuestion(quizContainer.querySelector('.quiz-header').innerHTML); }, 1500);
     }
-
-    function renderQuizResult() {
+    function renderQuizResult(modeSwitcherHTML = '') {
         const t = quizState.questions.length, s = quizState.score, p = Math.round((s / t) * 100);
-        let m = p === 100 ? "完美！🎉" : p >= 80 ? "很棒！👍" : p >= 60 ? "不错，继续加油！💪" : "要多多复习哦！📚";
-        quizContainer.innerHTML = `<div class="quiz-result"><h2>${m}</h2><p>你答对了 ${s} / ${t} 题 (${p}%)</p><button class="btn-primary" onclick="switchTab('vocab')">返回学习</button></div>`;
+        let m = p === 100 ? "完美！🎉" : p >= 80 ? "很棒！👍" : p >= 60 ? "不错，继续加油！💪" : "要多多复习哦！📚"; let emoji = p === 100 ? "🏆" : p >= 80 ? "🌟" : p >= 60 ? "💪" : "📚";
+        quizContainer.innerHTML = `<div class="quiz-header">${modeSwitcherHTML}</div><div class="quiz-result"><div style="font-size: 4rem; margin-bottom: 10px;">${emoji}</div><h2>${m}</h2><p>你答对了 <strong style="color:var(--accent-color); font-size:1.4rem;">${s}</strong> / ${t} 题 (${p}%)</p><button class="btn-primary" onclick="switchTab('vocab')">返回学习</button></div>`;
     }
-
     function speakJapanese(text) {
         if (!text) return; if (speechSynth.speaking) speechSynth.cancel();
         const u = new SpeechSynthesisUtterance(text); u.lang = 'ja-JP'; u.rate = 0.85;
         const v = speechSynth.getVoices(); const j = v.find(x => x.lang.includes('ja-JP') || x.lang.includes('ja')); if (j) u.voice = j;
         speechSynth.speak(u);
     }
-
     document.body.addEventListener('touchstart', function initVoice() { if (speechSynth.getVoices().length === 0) speechSynth.getVoices(); document.body.removeEventListener('touchstart', initVoice); }, { once: true });
 </script>
 </body>
